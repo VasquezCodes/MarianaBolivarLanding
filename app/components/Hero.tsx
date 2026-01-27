@@ -2,14 +2,37 @@
 
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useRef } from "react";
 import Image from "next/image";
+
+if (typeof window !== "undefined") {
+    gsap.registerPlugin(ScrollToPlugin);
+}
 
 export default function Hero() {
     const container = useRef<HTMLDivElement>(null);
     const textRef = useRef<HTMLDivElement>(null);
     const ctaRef = useRef<HTMLAnchorElement>(null);
     const imageContainerRef = useRef<HTMLDivElement>(null);
+
+    const handleCtaClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        const elem = document.getElementById("aplicar");
+
+        if (elem) {
+            gsap.to(window, {
+                duration: 1,
+                scrollTo: {
+                    y: elem,
+                    offsetY: 120,
+                },
+                ease: "power2.out",
+                overwrite: "auto",
+                autoKill: false,
+            });
+        }
+    };
 
     useGSAP(
         () => {
@@ -117,6 +140,7 @@ export default function Hero() {
                         <a
                             ref={ctaRef}
                             href="#aplicar"
+                            onClick={handleCtaClick}
                             className="opacity-0 group relative z-50 inline-flex items-center gap-2 rounded-full border border-vinotinto bg-vinotinto px-4 py-3 shadow-lg transition-all hover:bg-white hover:text-vinotinto hover:scale-105 md:gap-3 md:px-8 md:py-4"
                             aria-label="Ir a aplicar"
                         >
