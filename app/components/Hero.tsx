@@ -5,6 +5,14 @@ import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useRef } from "react";
 import Image from "next/image";
+import Autoplay from "embla-carousel-autoplay";
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+} from "@/app/components/ui/carousel";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollToPlugin);
@@ -75,32 +83,33 @@ export default function Hero() {
 
 
 
-            // Mouse Move Parallax
-            const handleMouseMove = (e: MouseEvent) => {
-                const { clientX, clientY } = e;
-                const xPos = (clientX / window.innerWidth - 0.5) * 20;
-                const yPos = (clientY / window.innerHeight - 0.5) * 20;
+            // Mouse Move Parallax (Desktop Only)
+            const mm = gsap.matchMedia();
 
-                gsap.to(".floating-shape", {
-                    x: xPos * 2,
-                    y: yPos * 2,
-                    duration: 1,
-                    ease: "power1.out",
-                });
+            mm.add("(min-width: 1024px)", () => {
+                const handleMouseMove = (e: MouseEvent) => {
+                    const { clientX, clientY } = e;
+                    const xPos = (clientX / window.innerWidth - 0.5) * 20;
+                    const yPos = (clientY / window.innerHeight - 0.5) * 20;
 
-                gsap.to(".hero-image-card", {
-                    x: -xPos,
-                    y: -yPos,
-                    duration: 1.2,
-                    ease: "power1.out",
-                });
-            };
+                    gsap.to(".floating-shape", {
+                        x: xPos * 2,
+                        y: yPos * 2,
+                        duration: 1,
+                        ease: "power1.out",
+                    });
 
-            window.addEventListener("mousemove", handleMouseMove);
+                    gsap.to(".hero-image-card", {
+                        x: -xPos,
+                        y: -yPos,
+                        duration: 1.2,
+                        ease: "power1.out",
+                    });
+                };
 
-            return () => {
-                window.removeEventListener("mousemove", handleMouseMove);
-            };
+                window.addEventListener("mousemove", handleMouseMove);
+                return () => window.removeEventListener("mousemove", handleMouseMove);
+            });
         },
         { scope: container }
     );
@@ -112,9 +121,9 @@ export default function Hero() {
         >
             {/* Organic Background Elements */}
             <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-                <div className="floating-shape absolute -right-[10%] -top-[10%] h-[500px] w-[500px] rounded-full bg-vinotinto/10 blur-[100px] md:h-[800px] md:w-[800px]" />
-                <div className="floating-shape absolute -left-[10%] top-[40%] h-[300px] w-[300px] rounded-full bg-pearl-gray blur-[80px] md:h-[600px] md:w-[600px]" />
-                <div className="floating-shape absolute bottom-[10%] right-[20%] h-[200px] w-[200px] rounded-full bg-vinotinto/5 blur-[60px]" />
+                <div className="floating-shape will-change-transform translate-z-0 absolute -right-[10%] -top-[10%] h-[300px] w-[300px] rounded-full bg-vinotinto/10 blur-[50px] md:h-[800px] md:w-[800px] md:blur-[100px]" />
+                <div className="floating-shape will-change-transform translate-z-0 absolute -left-[10%] top-[40%] h-[200px] w-[200px] rounded-full bg-pearl-gray blur-[40px] md:h-[600px] md:w-[600px] md:blur-[80px]" />
+                <div className="floating-shape will-change-transform translate-z-0 absolute bottom-[10%] right-[20%] h-[150px] w-[150px] rounded-full bg-vinotinto/5 blur-[30px] md:h-[200px] md:w-[200px] md:blur-[60px]" />
             </div>
 
             <div className="container relative z-10 mx-auto flex flex-col-reverse gap-12 px-6 py-12 lg:grid lg:grid-cols-12 lg:gap-8 lg:px-12 items-center">
@@ -168,9 +177,10 @@ export default function Hero() {
                     ref={imageContainerRef}
                     className="relative flex h-[400px] w-full items-center justify-center lg:col-span-5 lg:h-screen lg:justify-end md:h-[500px]"
                 >
-                    <div className="relative h-full w-full max-w-[500px]">
+                    {/* Desktop Collage (Hidden on Mobile) */}
+                    <div className="relative hidden h-full w-full max-w-[500px] lg:block">
                         {/* Main Image (Foto 2) */}
-                        <div className="hero-image-card absolute left-1/2 top-1/2 z-20 h-[300px] w-[240px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[32px] shadow-2xl md:h-[500px] md:w-[360px] lg:h-[600px] lg:w-[420px]">
+                        <div className="hero-image-card will-change-transform translate-z-0 absolute left-1/2 top-1/2 z-20 h-[300px] w-[240px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[32px] shadow-2xl md:h-[500px] md:w-[360px] lg:h-[600px] lg:w-[420px]">
                             <Image
                                 src="/marianaFotos/marianaFoto2.jpeg"
                                 alt="Mariana Bolivar Principal"
@@ -184,7 +194,7 @@ export default function Hero() {
                         </div>
 
                         {/* Secondary Image (Foto 4) - Top Right Behind */}
-                        <div className="hero-image-card absolute -right-4 top-[5%] z-10 h-[160px] w-[120px] rotate-6 overflow-hidden rounded-[24px] shadow-xl md:-right-24 md:h-[280px] md:w-[210px] lg:-right-36 lg:top-[10%]">
+                        <div className="hero-image-card will-change-transform translate-z-0 absolute -right-4 top-[5%] z-10 h-[160px] w-[120px] rotate-6 overflow-hidden rounded-[24px] shadow-xl md:-right-24 md:h-[280px] md:w-[210px] lg:-right-36 lg:top-[10%]">
                             <Image
                                 src="/marianaFotos/marianaFoto4.jpeg"
                                 alt="Mariana Bolivar Detail"
@@ -196,7 +206,7 @@ export default function Hero() {
                         </div>
 
                         {/* Tertiary Image (Foto 5) - Bottom Left Front */}
-                        <div className="hero-image-card absolute -left-4 bottom-[15%] z-30 h-[160px] w-[130px] -rotate-6 overflow-hidden rounded-[24px] border-4 border-white shadow-2xl md:-left-16 md:h-[280px] md:w-[220px] lg:-left-12 lg:bottom-[10%]">
+                        <div className="hero-image-card will-change-transform translate-z-0 absolute -left-4 bottom-[15%] z-30 h-[160px] w-[130px] -rotate-6 overflow-hidden rounded-[24px] border-4 border-white shadow-2xl md:-left-16 md:h-[280px] md:w-[220px] lg:-left-12 lg:bottom-[10%]">
                             <Image
                                 src="/marianaFotos/marianaFoto5.jpeg"
                                 alt="Mariana Bolivar Working"
@@ -206,6 +216,61 @@ export default function Hero() {
                                 unoptimized
                             />
                         </div>
+                    </div>
+
+                    {/* Mobile Carousel (Hidden on Desktop) */}
+                    <div className="block w-full max-w-[320px] lg:hidden">
+                        <Carousel
+                            className="w-full"
+                            opts={{ loop: true }}
+                            plugins={[
+                                Autoplay({
+                                    delay: 3000,
+                                }) as any,
+                            ]}
+                        >
+                            <CarouselContent>
+                                <CarouselItem>
+                                    <div className="hero-image-card will-change-transform translate-z-0 relative aspect-[3/4] w-full overflow-hidden rounded-[2rem] shadow-2xl">
+                                        <Image
+                                            src="/marianaFotos/marianaFoto2.jpeg"
+                                            alt="Mariana Bolivar Principal"
+                                            fill
+                                            className="object-cover"
+                                            priority
+                                            sizes="(max-width: 768px) 100vw, 50vw"
+                                            unoptimized
+                                        />
+                                    </div>
+                                </CarouselItem>
+                                <CarouselItem>
+                                    <div className="hero-image-card will-change-transform translate-z-0 relative aspect-[3/4] w-full overflow-hidden rounded-[2rem] shadow-2xl">
+                                        <Image
+                                            src="/marianaFotos/marianaFoto4.jpeg"
+                                            alt="Mariana Bolivar Detail"
+                                            fill
+                                            className="object-cover object-top"
+                                            sizes="(max-width: 768px) 100vw, 50vw"
+                                            unoptimized
+                                        />
+                                    </div>
+                                </CarouselItem>
+                                <CarouselItem>
+                                    <div className="hero-image-card will-change-transform translate-z-0 relative aspect-[3/4] w-full overflow-hidden rounded-[2rem] shadow-2xl">
+                                        <Image
+                                            src="/marianaFotos/marianaFoto5.jpeg"
+                                            alt="Mariana Bolivar Working"
+                                            fill
+                                            className="object-cover"
+                                            sizes="(max-width: 768px) 100vw, 50vw"
+                                            unoptimized
+                                        />
+                                    </div>
+                                </CarouselItem>
+                            </CarouselContent>
+                            <CarouselPrevious className="left-2 bg-white/80 backdrop-blur-sm border-none shadow-md" />
+                            <CarouselNext className="right-2 bg-white/80 backdrop-blur-sm border-none shadow-md" />
+                        </Carousel>
                     </div>
                 </div>
             </div>

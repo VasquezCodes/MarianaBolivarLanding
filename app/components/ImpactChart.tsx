@@ -3,7 +3,7 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
     Area,
     AreaChart,
@@ -61,6 +61,16 @@ export default function ImpactChart() {
     const sectionRef = useRef<HTMLDivElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
     const chartRef = useRef<HTMLDivElement>(null);
+    const [isDesktop, setIsDesktop] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+        const check = () => setIsDesktop(window.innerWidth >= 768);
+        check();
+        window.addEventListener('resize', check);
+        return () => window.removeEventListener('resize', check);
+    }, []);
 
     useGSAP(
         () => {
@@ -95,7 +105,7 @@ export default function ImpactChart() {
     return (
         <section ref={sectionRef} className="bg-white py-24 relative overflow-hidden">
             {/* Background Decoration */}
-            <div className="absolute right-0 top-0 -z-10 h-96 w-96 translate-x-1/3 -translate-y-1/3 rounded-full bg-pearl-gray blur-3xl" />
+            <div className="absolute right-0 top-0 -z-10 h-96 w-96 translate-x-1/3 -translate-y-1/3 rounded-full bg-pearl-gray blur-xl md:blur-3xl" />
 
             <div className="container mx-auto px-6 lg:px-12">
                 <div className="mb-16 flex flex-col items-center text-center">
@@ -142,109 +152,116 @@ export default function ImpactChart() {
 
 
                     <div className="h-[400px] w-full">
-                        <div className="block h-full w-full md:hidden">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <BarChart
-                                    data={data}
-                                    margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
-                                >
-                                    <CartesianGrid
-                                        strokeDasharray="3 3"
-                                        vertical={false}
-                                        stroke="#f3f4f6"
-                                    />
-                                    <XAxis
-                                        dataKey="month"
-                                        axisLine={false}
-                                        tickLine={false}
-                                        tick={{ fill: "#9ca3af", fontSize: 12 }}
-                                        dy={10}
-                                    />
-                                    <YAxis
-                                        axisLine={false}
-                                        tickLine={false}
-                                        tick={{ fill: "#9ca3af", fontSize: 12 }}
-                                        tickFormatter={(value) => `$${value / 1000}k`}
-                                    />
-                                    <Tooltip
-                                        content={<CustomTooltip />}
-                                        cursor={{ fill: '#f3f4f6' }}
-                                    />
-                                    <Bar
-                                        dataKey="without"
-                                        fill="#000000"
-                                        radius={[4, 4, 0, 0]}
-                                        name="Sin Asesoría"
-                                        barSize={20}
-                                    />
-                                    <Bar
-                                        dataKey="withFinax"
-                                        fill="#5d0418"
-                                        radius={[4, 4, 0, 0]}
-                                        name="Con Finax"
-                                        barSize={20}
-                                    />
-                                </BarChart>
-                            </ResponsiveContainer>
-                        </div>
+                        {isMounted && !isDesktop && (
+                            <div className="block h-full w-full md:hidden">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <BarChart
+                                        data={data}
+                                        margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+                                    >
+                                        <CartesianGrid
+                                            strokeDasharray="3 3"
+                                            vertical={false}
+                                            stroke="#f3f4f6"
+                                        />
+                                        <XAxis
+                                            dataKey="month"
+                                            axisLine={false}
+                                            tickLine={false}
+                                            tick={{ fill: "#9ca3af", fontSize: 12 }}
+                                            dy={10}
+                                        />
+                                        <YAxis
+                                            axisLine={false}
+                                            tickLine={false}
+                                            tick={{ fill: "#9ca3af", fontSize: 12 }}
+                                            tickFormatter={(value) => `$${value / 1000}k`}
+                                        />
+                                        <Tooltip
+                                            content={<CustomTooltip />}
+                                            cursor={{ fill: '#f3f4f6' }}
+                                        />
+                                        <Bar
+                                            dataKey="without"
+                                            fill="#000000"
+                                            radius={[4, 4, 0, 0]}
+                                            name="Sin Asesoría"
+                                            barSize={20}
+                                        />
+                                        <Bar
+                                            dataKey="withFinax"
+                                            fill="#5d0418"
+                                            radius={[4, 4, 0, 0]}
+                                            name="Con Finax"
+                                            barSize={20}
+                                        />
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            </div>
+                        )}
 
                         {/* Desktop Area Chart */}
-                        <div className="hidden h-full w-full md:block">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <AreaChart
-                                    data={data}
-                                    margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
-                                >
-                                    <defs>
-                                        <linearGradient id="colorFinax" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="5%" stopColor="#5d0418" stopOpacity={0.2} />
-                                            <stop offset="95%" stopColor="#5d0418" stopOpacity={0} />
-                                        </linearGradient>
-                                        <linearGradient id="colorWithout" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="5%" stopColor="#000000" stopOpacity={0.1} />
-                                            <stop offset="95%" stopColor="#000000" stopOpacity={0} />
-                                        </linearGradient>
-                                    </defs>
-                                    <CartesianGrid
-                                        strokeDasharray="3 3"
-                                        vertical={false}
-                                        stroke="#f3f4f6"
-                                    />
-                                    <XAxis
-                                        dataKey="month"
-                                        axisLine={false}
-                                        tickLine={false}
-                                        tick={{ fill: "#9ca3af", fontSize: 12 }}
-                                        dy={10}
-                                    />
-                                    <YAxis
-                                        axisLine={false}
-                                        tickLine={false}
-                                        tick={{ fill: "#9ca3af", fontSize: 12 }}
-                                        tickFormatter={(value) => `$${value / 1000}k`}
-                                    />
-                                    <Tooltip content={<CustomTooltip />} />
-                                    <Area
-                                        type="monotone"
-                                        dataKey="without"
-                                        stroke="#000000"
-                                        strokeWidth={3}
-                                        fillOpacity={1}
-                                        fill="url(#colorWithout)"
-                                        name="Sin Asesoría"
-                                    />
-                                    <Area
-                                        type="monotone"
-                                        dataKey="withFinax"
-                                        stroke="#5d0418"
-                                        strokeWidth={4}
-                                        fillOpacity={1}
-                                        fill="url(#colorFinax)"
-                                        name="Con Finax"
-                                    />
-                                </AreaChart>
-                            </ResponsiveContainer>
-                        </div>
+                        {isMounted && isDesktop && (
+                            <div className="hidden h-full w-full md:block">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <AreaChart
+                                        data={data}
+                                        margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+                                    >
+                                        <defs>
+                                            <linearGradient id="colorFinax" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="5%" stopColor="#5d0418" stopOpacity={0.2} />
+                                                <stop offset="95%" stopColor="#5d0418" stopOpacity={0} />
+                                            </linearGradient>
+                                            <linearGradient id="colorWithout" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="5%" stopColor="#000000" stopOpacity={0.1} />
+                                                <stop offset="95%" stopColor="#000000" stopOpacity={0} />
+                                            </linearGradient>
+                                        </defs>
+                                        <CartesianGrid
+                                            strokeDasharray="3 3"
+                                            vertical={false}
+                                            stroke="#f3f4f6"
+                                        />
+                                        <XAxis
+                                            dataKey="month"
+                                            axisLine={false}
+                                            tickLine={false}
+                                            tick={{ fill: "#9ca3af", fontSize: 12 }}
+                                            dy={10}
+                                        />
+                                        <YAxis
+                                            axisLine={false}
+                                            tickLine={false}
+                                            tick={{ fill: "#9ca3af", fontSize: 12 }}
+                                            tickFormatter={(value) => `$${value / 1000}k`}
+                                        />
+                                        <Tooltip content={<CustomTooltip />} />
+                                        <Area
+                                            type="monotone"
+                                            dataKey="without"
+                                            stroke="#000000"
+                                            strokeWidth={3}
+                                            fillOpacity={1}
+                                            fill="url(#colorWithout)"
+                                            name="Sin Asesoría"
+                                        />
+                                        <Area
+                                            type="monotone"
+                                            dataKey="withFinax"
+                                            stroke="#5d0418"
+                                            strokeWidth={4}
+                                            fillOpacity={1}
+                                            fill="url(#colorFinax)"
+                                            name="Con Finax"
+                                        />
+                                    </AreaChart>
+                                </ResponsiveContainer>
+                            </div>
+                        )}
+                        {!isMounted && (
+                            <div className="h-full w-full animate-pulse bg-neutral-100 rounded-3xl" />
+                        )}
                     </div>
                 </div>
             </div>
