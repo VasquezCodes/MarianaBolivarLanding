@@ -268,8 +268,8 @@ export default function Hero() {
                                     </div>
                                 </CarouselItem>
                             </CarouselContent>
-                            <CarouselPrevious className="left-2 bg-white/80 backdrop-blur-sm border-none shadow-md" />
-                            <CarouselNext className="right-2 bg-white/80 backdrop-blur-sm border-none shadow-md" />
+                            <CarouselPrevious className="left-2 bg-white/90 border-none shadow-sm" />
+                            <CarouselNext className="right-2 bg-white/90 border-none shadow-sm" />
                         </Carousel>
                     </div>
                 </div>

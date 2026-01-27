@@ -90,16 +90,7 @@ export default function About() {
                     Creemos que el capital correcto, en el momento correcto, puede transformar un negocio. Y nuestro trabajo es ayudarte a acceder a él de manera inteligente.
                 </p>
 
-                <div className="mt-6 grid grid-cols-2 gap-8 border-t border-neutral-200 pt-8">
-                    <div className="flex flex-col gap-1">
-                        <span className="font-serif text-4xl font-bold text-black">5+</span>
-                        <span className="text-sm font-medium text-neutral-500 uppercase tracking-wider">Años de Exp.</span>
-                    </div>
-                    <div className="flex flex-col gap-1">
-                        <span className="font-serif text-4xl font-bold text-black">500+</span>
-                        <span className="text-sm font-medium text-neutral-500 uppercase tracking-wider">Alumnas</span>
-                    </div>
-                </div>
+
             </div>
         </section>
     );

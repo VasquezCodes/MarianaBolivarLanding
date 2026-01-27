@@ -43,68 +43,72 @@ export default function LayeredScroll() {
 
     // Implement User's Stacked Panels Logic
     useGSAP(() => {
-        const panels: HTMLElement[] = gsap.utils.toArray(".section");
+        const mm = gsap.matchMedia();
 
-        // Ensure proper z-index stacking (later panels cover earlier ones)
-        panels.forEach((panel, i) => {
-            panel.style.zIndex = `${i + 1}`;
-        });
+        mm.add("(min-width: 1024px)", () => {
+            const panels: HTMLElement[] = gsap.utils.toArray(".section");
 
-        // Remove the last panel from the array (it shouldn't animate out)
-        if (panels.length > 0) {
-            panels.pop();
-        }
-
-        panels.forEach((panel) => {
-            // Get the element holding the content inside the panel
-            const innerpanel = panel.querySelector(".section-inner") as HTMLElement;
-            if (!innerpanel) return;
-
-            // Get the Height of the content inside the panel
-            const panelHeight = innerpanel.offsetHeight;
-
-            // Get the window height
-            const windowHeight = window.innerHeight;
-
-            const difference = panelHeight - windowHeight;
-
-            // ratio (between 0 and 1) representing the portion of the overall animation that's for the fake-scrolling.
-            const fakeScrollRatio = difference > 0 ? (difference / (difference + windowHeight)) : 0;
-
-            // if we need to fake scroll, add margin to bottom
-            if (fakeScrollRatio) {
-                panel.style.marginBottom = panelHeight * fakeScrollRatio + "px";
-            }
-
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: panel,
-                    start: "bottom bottom",
-                    // end needs to be strictly typed or defined
-                    end: () => fakeScrollRatio ? `+=${innerpanel.offsetHeight}` : "bottom top",
-                    pinSpacing: false,
-                    pin: true,
-                    scrub: true,
-                }
+            // Ensure proper z-index stacking (later panels cover earlier ones)
+            panels.forEach((panel, i) => {
+                panel.style.zIndex = `${i + 1}`;
             });
 
-            // fake scroll animation
-            if (fakeScrollRatio) {
-                tl.to(innerpanel, {
-                    yPercent: -100,
-                    y: windowHeight,
-                    duration: 1 / (1 - fakeScrollRatio) - 1,
-                    ease: "none"
-                });
+            // Remove the last panel from the array (it shouldn't animate out)
+            if (panels.length > 0) {
+                panels.pop();
             }
 
-            // Scale and Fade out effect
-            tl.fromTo(panel,
-                { scale: 1, opacity: 1 },
-                { scale: 0.7, opacity: 0.5, duration: 0.9 }
-            ).to(panel,
-                { opacity: 0, duration: 0.1 }
-            );
+            panels.forEach((panel) => {
+                // Get the element holding the content inside the panel
+                const innerpanel = panel.querySelector(".section-inner") as HTMLElement;
+                if (!innerpanel) return;
+
+                // Get the Height of the content inside the panel
+                const panelHeight = innerpanel.offsetHeight;
+
+                // Get the window height
+                const windowHeight = window.innerHeight;
+
+                const difference = panelHeight - windowHeight;
+
+                // ratio (between 0 and 1) representing the portion of the overall animation that's for the fake-scrolling.
+                const fakeScrollRatio = difference > 0 ? (difference / (difference + windowHeight)) : 0;
+
+                // if we need to fake scroll, add margin to bottom
+                if (fakeScrollRatio) {
+                    panel.style.marginBottom = panelHeight * fakeScrollRatio + "px";
+                }
+
+                const tl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: panel,
+                        start: "bottom bottom",
+                        // end needs to be strictly typed or defined
+                        end: () => fakeScrollRatio ? `+=${innerpanel.offsetHeight}` : "bottom top",
+                        pinSpacing: false,
+                        pin: true,
+                        scrub: true,
+                    }
+                });
+
+                // fake scroll animation
+                if (fakeScrollRatio) {
+                    tl.to(innerpanel, {
+                        yPercent: -100,
+                        y: windowHeight,
+                        duration: 1 / (1 - fakeScrollRatio) - 1,
+                        ease: "none"
+                    });
+                }
+
+                // Scale and Fade out effect
+                tl.fromTo(panel,
+                    { scale: 1, opacity: 1 },
+                    { scale: 0.7, opacity: 0.5, duration: 0.9 }
+                ).to(panel,
+                    { opacity: 0, duration: 0.1 }
+                );
+            });
         });
     }, []); // Scope removed to allow global selection of .section class
 
