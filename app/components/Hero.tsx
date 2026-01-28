@@ -26,14 +26,14 @@ export default function Hero() {
 
     const handleCtaClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
-        const elem = document.getElementById("aplicar");
+        const elem = document.getElementById("programa-capital");
 
         if (elem) {
             gsap.to(window, {
                 duration: 1,
                 scrollTo: {
                     y: elem,
-                    offsetY: 120,
+                    offsetY: 100,
                 },
                 ease: "power2.out",
                 overwrite: "auto",
@@ -148,7 +148,7 @@ export default function Hero() {
                     <div className="mt-8">
                         <a
                             ref={ctaRef}
-                            href="#aplicar"
+                            href="#programa-capital"
                             onClick={handleCtaClick}
                             className="opacity-0 group relative z-50 inline-flex items-center gap-2 rounded-full border border-vinotinto bg-vinotinto px-4 py-3 shadow-lg transition-all hover:bg-white hover:text-vinotinto hover:scale-105 md:gap-3 md:px-8 md:py-4"
                             aria-label="Ir a aplicar"

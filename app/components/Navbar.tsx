@@ -26,6 +26,13 @@ export default function Navbar() {
 
     const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
         e.preventDefault();
+
+        // If we are not on the home page, redirect to home with the hash
+        if (window.location.pathname !== "/") {
+            window.location.href = "/" + href;
+            return;
+        }
+
         const targetId = href.replace(/.*\#/, "");
         const elem = document.getElementById(targetId);
 
@@ -78,15 +85,6 @@ export default function Navbar() {
                         </Link>
                     ))}
                 </div>
-
-                <a
-                    href="#contacto"
-                    onClick={(e) => handleLinkClick(e, "#contacto")}
-                    className="hidden rounded-full bg-black px-6 py-2.5 text-xs font-bold tracking-widest text-white transition-all uppercase hover:bg-vinotinto hover:scale-105 md:block shadow-lg cursor-pointer"
-                >
-                    Consultoría
-                </a>
-
                 {/* Mobile Menu Button */}
                 <button
                     className="flex flex-col gap-1.5 md:hidden z-50 relative"
@@ -110,15 +108,9 @@ export default function Navbar() {
                                 {item}
                             </Link>
                         ))}
-                        <a
-                            href="#contacto"
-                            onClick={(e) => handleLinkClick(e, "#contacto")}
-                            className="mt-4 rounded-full bg-black px-8 py-3 text-sm font-bold tracking-widest text-white transition-all uppercase hover:bg-vinotinto cursor-pointer"
-                        >
-                            Consultoría
-                        </a>
                     </div>
                 </div>
+
             </div>
         </nav>
     );

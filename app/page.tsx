@@ -5,6 +5,7 @@ import Services from "./components/Services";
 import Footer from "./components/Footer";
 import ImpactChart from "./components/ImpactChart";
 import LayeredScroll from "./components/LayeredScroll";
+import Contact from "./components/Contact";
 
 export default function Home() {
   return (
@@ -43,10 +44,13 @@ export default function Home() {
         </section>
       </div>
 
-      {/* Footer - Normal flow, no stacking */}
-      <div id="contacto">
-        <Footer />
+      {/* Contact Section */}
+      <div id="contacto" className="w-full">
+        <Contact />
       </div>
+
+      {/* Footer - Normal flow */}
+      <Footer />
     </main>
   );
 }

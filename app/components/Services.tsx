@@ -4,6 +4,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRef } from "react";
+import { MessageCircle, FileText, ArrowRight } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -88,7 +89,7 @@ export default function Services() {
                     </div>
 
                     {/* Column 2: The Solution (Gain) */}
-                    <div className="reveal-text relative flex flex-col justify-center lg:col-span-7">
+                    <div id="programa-capital" className="reveal-text relative flex flex-col justify-center lg:col-span-7">
                         <div className="absolute -left-12 -top-12 -z-10 h-64 w-64 rounded-full bg-pearl-gray opacity-50 blur-3xl"></div>
 
                         <h3 className="mb-6 font-serif text-3xl font-bold text-black md:text-4xl">
@@ -116,10 +117,28 @@ export default function Services() {
                             ))}
                         </ul>
 
-                        <button id="aplicar" className="group flex w-fit items-center gap-3 border-b-2 border-vinotinto pb-1 text-lg font-bold tracking-wider text-black transition-all hover:border-black hover:pb-2">
-                            APLICAR AHORA
-                            <span className="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
-                        </button>
+                        <div className="flex flex-col sm:flex-row gap-6 mt-4">
+                            {/* Button 1: Doubts (WhatsApp) */}
+                            <a
+                                href="https://wa.me/13213686440?text=Hola,%20tengo%20dudas%20sobre%20el%20servicio%20de%20Acceso%20a%20Capital"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group flex items-center justify-center gap-3 rounded-full border border-black px-8 py-3 text-sm font-bold tracking-widest text-black transition-all hover:bg-black hover:text-white"
+                            >
+                                <MessageCircle size={18} />
+                                TENGO DUDAS
+                            </a>
+
+                            {/* Button 2: Application Form */}
+                            <a
+                                href="/aplicar"
+                                className="group flex items-center justify-center gap-3 rounded-full bg-vinotinto px-8 py-3 text-sm font-bold tracking-widest text-white shadow-lg transition-all hover:bg-vinotinto-light hover:scale-105"
+                            >
+                                <FileText size={18} />
+                                APLICAR AL PROGRAMA
+                                <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
