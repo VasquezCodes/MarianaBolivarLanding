@@ -5,6 +5,7 @@ import Services from "./components/Services";
 import Footer from "./components/Footer";
 import ImpactChart from "./components/ImpactChart";
 import LayeredScroll from "./components/LayeredScroll";
+import SuccessStories from "./components/SuccessStories";
 import Contact from "./components/Contact";
 
 export default function Home() {
@@ -42,6 +43,10 @@ export default function Home() {
             <Services />
           </div>
         </section>
+      </div>
+
+      <div id="historias-de-exito" className="w-full">
+        <SuccessStories />
       </div>
 
       {/* Contact Section */}
